@@ -1,4 +1,4 @@
-//IIFE that aliases jQuery as $
+//IIFE that aliases jQuery as $ symbol
 (function($){
 
     var Contacts = [
