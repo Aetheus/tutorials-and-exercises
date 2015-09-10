@@ -10,17 +10,17 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-Route::get("/", function (){
-
-});
 
 Route::get("about", "PagesController@about");
 Route::get("contact", "PagesController@contact");
 
-Route::get("articles", "ArticleController@index");
-Route::get("articles/create", "ArticleController@create");
-Route::get("articles/future", "ArticleController@future");
-Route::get("articles/{id}", "ArticleController@show");
-//always put the wildcard route BELOW all the other routes
+Route::resource("articles", "ArticlesController");
 
-Route::post("articles", "ArticleController@store");
+/*Route::get("articles", "ArticlesController@index");
+Route::get("articles/create", "ArticlesController@create");
+Route::get("articles/future", "ArticlesController@future");
+Route::get("articles/{id}", "ArticlesController@show");
+always put the wildcard route BELOW all the other routes
+Route::post("articles", "ArticlesController@store");
+Route::get("articles/{id}/edit", "ArticlesController@edit");
+*/

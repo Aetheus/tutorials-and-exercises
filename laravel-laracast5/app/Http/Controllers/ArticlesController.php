@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 //use Illuminate\Http\Request;
-use Request;
 use Carbon\Carbon;
+use App\Http\Requests\ArticleRequest;
+use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Article;
 
-class ArticleController extends Controller
+
+class ArticlesController extends Controller
 {
     public function index(){
         //$articles = Article::all();
@@ -23,16 +25,10 @@ class ArticleController extends Controller
         return view("articles.create");
     }
 
-    public function store(){
-        $input = Request::all();
+    public function edit($id){
+        $article = Article::findOrFail($id);
 
-        Article::create([
-            "title" => $input["title"],
-            "body"  => $input["body"],
-            "published_at" => $input["published_at"]
-        ]);
-
-        return redirect("articles");
+        return view("articles.edit", compact("article") );
     }
 
     public function show($id){
@@ -49,6 +45,41 @@ class ArticleController extends Controller
                 return view("articles.show", compact("article") );
         */
     }
+
+    public function store(ArticleRequest $request){
+        $input = $request->all();
+
+        Article::create([
+            "title" => $input["title"],
+            "body"  => $input["body"],
+            "published_at" => $input["published_at"]
+        ]);
+
+        return redirect("articles");
+    }
+
+    //  alternative way to accomplish the above without needing a specific request subclass
+    public function store2(Request $request){
+        $this->validate($request, ["body" => "required", "title"=> "required|min:3", "published_at" => "required"]);
+
+        $input = $request->all();
+        Article::create([
+            "title" => $input->title,
+            "body" => $input->body,
+            "published_at" => $input->published_at
+        ]);
+
+        return redirect("articles");
+    }
+
+    public function update($id, ArticleRequest $request){
+        $article = Article::findOrFail($id);
+
+        $article->update($request->all());
+
+        return redirect("articles");
+    }
+
 
     public function future(){
         $articles = Article::orderBy("published_at", "asc")->unpublished()->get();

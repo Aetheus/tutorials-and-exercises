@@ -7,7 +7,7 @@
 
 @foreach($articles as $article)
     <article class="">
-        <a href="{{ action("ArticleController@show",[$article->id]) }}">
+        <a href="{{ action("ArticlesController@show",[$article->id]) }}">
             <h1>{{$article->title }}</h1>
         </a>
         <p> {{$article->published_at}} </p>
