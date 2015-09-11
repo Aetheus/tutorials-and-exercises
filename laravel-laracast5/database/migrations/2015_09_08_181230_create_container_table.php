@@ -34,6 +34,6 @@ class CreateContainerTable extends Migration
      */
     public function down()
     {
-        Schema::drop('Container');
+        Schema::drop('containers');
     }
 }

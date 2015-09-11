@@ -36,4 +36,9 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    //a user can have many articles. use this like so: $user->articles OR $user->articles()->get();
+    public function articles(){
+        return $this->hasMany("App\Article");
+    }
 }

@@ -9,12 +9,15 @@ class Article extends Model
 {
     //allow mass assignment via Article::create([ "title"=>"bob", "title"=>"jack" ... ])
     protected $fillable = [
-        "title", "body", "excerpt", "published_at"
+        "title", "body", "excerpt", "published_at",
+        "user_id" //TEMPORARY!!!
     ];
 
     //thanks to this attribute, the published_at field will be retrieved as a Carbon object instead of a plain string
     // e.g: $article->published_at will now give us a Carbon time object
     protected $dates = ["published_at"];
+
+
 
     //this mutator will activate automatically when the published_at field is modified.
     //note the convention and follow it: set[NameOfAttribute]Attribute. underscores are converted to camel-case
@@ -22,7 +25,7 @@ class Article extends Model
         $this->attributes["published_at"] = Carbon::parse($date);
     }
 
-    //this is a scope
+    //this is a scope; use it to retrieve models matching the scope
     //note the convetion: scope[NameOfScope]
     //you would use this elsewhere like so: Article::all()->published()->get()
     public function scopePublished($query){
@@ -31,5 +34,10 @@ class Article extends Model
 
     public function scopeUnpublished($query){
         $query->where("published_at", ">", Carbon::now() );
+    }
+
+    //an article is owned by a user; use this like so - $article->user OR $article->user()->get();
+    public function user(){
+        return $this->belongsTo("App\User");
     }
 }

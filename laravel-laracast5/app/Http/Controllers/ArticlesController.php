@@ -52,7 +52,8 @@ class ArticlesController extends Controller
         Article::create([
             "title" => $input["title"],
             "body"  => $input["body"],
-            "published_at" => $input["published_at"]
+            "published_at" => $input["published_at"],
+            "user_id" => $input["user_id"] /*temporary!!!*/            
         ]);
 
         return redirect("articles");
