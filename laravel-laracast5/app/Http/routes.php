@@ -11,10 +11,29 @@
 |
 */
 
+
+
+
 Route::get("about", "PagesController@about");
 Route::get("contact", "PagesController@contact");
 
 Route::resource("articles", "ArticlesController");
+
+Route::controllers([
+    "auth" => "Auth\AuthController",
+    "password" => "Auth\PasswordController"
+]);
+
+Route::get("index", "PagesController@home");
+Route::get("home", "PagesController@home");
+
+Route::get("foo",
+[
+    "middleware" => "manager",
+    function(){
+        return "Hi there manager";
+    }
+]);
 
 /*Route::get("articles", "ArticlesController@index");
 Route::get("articles/create", "ArticlesController@create");

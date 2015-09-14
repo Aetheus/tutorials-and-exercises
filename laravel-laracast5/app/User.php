@@ -38,7 +38,18 @@ class User extends Model implements AuthenticatableContract,
     protected $hidden = ['password', 'remember_token'];
 
     //a user can have many articles. use this like so: $user->articles OR $user->articles()->get();
+    //use the latter form to continue chaining - $user->articles()->where("title","somethingimlookingfor");
     public function articles(){
         return $this->hasMany("App\Article");
     }
+
+    public function isATeamManager(){
+        return true;   //dummy code for now
+    }
+
+    //mutator
+    public function setPasswordAttribute($password){
+        $this->attributes["password"] = bcrypt($password);
+    }
+    //$user->password = "bob123";
 }

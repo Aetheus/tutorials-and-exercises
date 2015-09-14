@@ -10,6 +10,13 @@ use App\Http\Controllers\Controller;
 class PagesController extends Controller
 {
     //
+    function __construct(){
+        $this->middleware("demo");
+    }
+
+    function home(){
+        return view("welcome");
+    }
 
     function about(){
         $name = "Adrian Heng";

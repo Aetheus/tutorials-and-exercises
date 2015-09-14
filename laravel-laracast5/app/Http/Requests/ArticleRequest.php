@@ -24,7 +24,7 @@ class ArticleRequest extends Request
      */
     public function rules()
     {
-        $requestMethod = $this->method();
+        //$requestMethod = $this->method();
         //we could conceivably do rules that do additional stuff depending on the request method (e.g: one for updates, one for create). but for now, we won't
 
         $rules = [

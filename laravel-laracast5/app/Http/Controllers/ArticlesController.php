@@ -14,6 +14,16 @@ use App\Article;
 
 class ArticlesController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware("auth", ["only" => "create"]);  //the "auth" middleware route was defined in Http\Kernel.php
+        //run it ONLY on the create method
+
+        //OR
+        //$this->middleware("auth", ["except" => "index"]);
+        //middleware will be applied to all routes except index
+    }
+
     public function index(){
         //$articles = Article::all();
         $articles =
@@ -47,14 +57,16 @@ class ArticlesController extends Controller
     }
 
     public function store(ArticleRequest $request){
+        $article = new Article($request->all());
+        \Auth::user()->articles()->save( $article );
+        /* alternative way
         $input = $request->all();
-
         Article::create([
             "title" => $input["title"],
             "body"  => $input["body"],
             "published_at" => $input["published_at"],
-            "user_id" => $input["user_id"] /*temporary!!!*/            
-        ]);
+            "user_id" => \Auth::user()->id
+        ]);*/
 
         return redirect("articles");
     }
