@@ -16,8 +16,10 @@ class ArticlesController extends Controller
 {
 
     public function __construct(){
-        $this->middleware("auth", ["only" => "create"]);  //the "auth" middleware route was defined in Http\Kernel.php
+        //$this->middleware("auth", ["only" => "create"]);  //the "auth" middleware route was defined in Http\Kernel.php
         //run it ONLY on the create method
+
+        $this->middleware("auth", ["except" => ["index", "show"]]);
 
         //OR
         //$this->middleware("auth", ["except" => "index"]);
@@ -35,15 +37,14 @@ class ArticlesController extends Controller
         return view("articles.create");
     }
 
-    public function edit($id){
-        $article = Article::findOrFail($id);
-
+    public function edit(Article $article){
         return view("articles.edit", compact("article") );
     }
 
-    public function show($id){
+    //note that this works because of model binding. look in RouteServicesProvider.php
+    public function show(Article $article){
         //note the findOrFail function will try to find the item in the DB - if it fails, it throws an exception
-        $article = Article::findOrFail($id);
+        //$article = Article::findOrFail($id);
 
         return view("articles.show", compact("article") );
         /*  The long way:
@@ -59,6 +60,8 @@ class ArticlesController extends Controller
     public function store(ArticleRequest $request){
         $article = new Article($request->all());
         \Auth::user()->articles()->save( $article );
+
+
         /* alternative way
         $input = $request->all();
         Article::create([
@@ -67,6 +70,11 @@ class ArticlesController extends Controller
             "published_at" => $input["published_at"],
             "user_id" => \Auth::user()->id
         ]);*/
+
+        //\Session::flash("flash_message", "Your article has been created");
+        //session()->flash("flash_message_important",true);
+        //flash()->success("Your article has been created");
+        flash()->overlay("Your article has been created", "Success!");
 
         return redirect("articles");
     }
@@ -85,9 +93,7 @@ class ArticlesController extends Controller
         return redirect("articles");
     }
 
-    public function update($id, ArticleRequest $request){
-        $article = Article::findOrFail($id);
-
+    public function update($article, ArticleRequest $request){
         $article->update($request->all());
 
         return redirect("articles");

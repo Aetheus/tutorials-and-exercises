@@ -26,6 +26,7 @@ Route::controllers([
 
 Route::get("index", "PagesController@home");
 Route::get("home", "PagesController@home");
+Route::get("/", "PagesController@home");
 
 Route::get("foo",
 [

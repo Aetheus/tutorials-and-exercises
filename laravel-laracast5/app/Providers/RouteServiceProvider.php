@@ -25,8 +25,15 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(Router $router)
     {
         //
-
         parent::boot($router);
+
+        //bind the "articles" widlcard key to Article models
+        //$router->model("articles", "App\Article");
+
+        //more complex bind that does the same thing, but can also do more complex things
+        $router->bind("articles", function ($id){
+            return \App\Article::find($id);
+        });
     }
 
     /**
