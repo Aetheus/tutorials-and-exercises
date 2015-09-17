@@ -9,7 +9,7 @@
             Num: {{$phone}} <br />
         @endforeach
     @else
-        asdfasdf
+        No number found
     @endif
     </div>
 @stop

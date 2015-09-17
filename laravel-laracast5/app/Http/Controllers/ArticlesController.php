@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Article;
+use App\Tag;
 
 
 class ArticlesController extends Controller
@@ -34,11 +35,15 @@ class ArticlesController extends Controller
     }
 
     public function create(){
-        return view("articles.create");
+        $tags = Tag::lists("name","id");
+
+        return view("articles.create", compact("tags"));
     }
 
     public function edit(Article $article){
-        return view("articles.edit", compact("article") );
+        $tags = Tag::lists("name","id");
+
+        return view("articles.edit", compact("article", "tags") );
     }
 
     //note that this works because of model binding. look in RouteServicesProvider.php
@@ -58,22 +63,11 @@ class ArticlesController extends Controller
     }
 
     public function store(ArticleRequest $request){
-        $article = new Article($request->all());
-        \Auth::user()->articles()->save( $article );
+        $article = \Auth::user()->articles()->create($request->all());
 
+        $tagIds = $request->input("taglist"); //returns array of submitted ids of tags
+        $article->tags()->attach($tagIds);
 
-        /* alternative way
-        $input = $request->all();
-        Article::create([
-            "title" => $input["title"],
-            "body"  => $input["body"],
-            "published_at" => $input["published_at"],
-            "user_id" => \Auth::user()->id
-        ]);*/
-
-        //\Session::flash("flash_message", "Your article has been created");
-        //session()->flash("flash_message_important",true);
-        //flash()->success("Your article has been created");
         flash()->overlay("Your article has been created", "Success!");
 
         return redirect("articles");
@@ -95,6 +89,9 @@ class ArticlesController extends Controller
 
     public function update($article, ArticleRequest $request){
         $article->update($request->all());
+
+        //$tagIds = $request->input("taglist");
+        //$article->tags()->attach($tagIds);
 
         return redirect("articles");
     }

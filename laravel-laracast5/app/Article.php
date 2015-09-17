@@ -38,8 +38,14 @@ class Article extends Model
         return $this->belongsTo("App\User");
     }
 
-    //$art->tags()->attach($tagID); 
+    //$art->tags()->attach($tagID);
     public function tags(){
         return $this->belongsToMany("App\Tag")->withTimestamps();
+    }
+
+    //get a list of tag ids associated with the article
+    //$art->tag_list()
+    public function getTagListAttribute(){
+        return $this->tags->lists("id")->all();
     }
 }
