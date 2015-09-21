@@ -38,6 +38,7 @@ class Article extends Model
         return $this->belongsTo("App\User");
     }
 
+    //this is a many-to-many relationship, linked via a link table. The Tag model has a similar one
     //$art->tags()->attach($tagID);
     public function tags(){
         return $this->belongsToMany("App\Tag")->withTimestamps();

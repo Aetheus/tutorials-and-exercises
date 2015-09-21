@@ -63,10 +63,7 @@ class ArticlesController extends Controller
     }
 
     public function store(ArticleRequest $request){
-        $article = \Auth::user()->articles()->create($request->all());
-
-        $tagIds = $request->input("taglist"); //returns array of submitted ids of tags
-        $article->tags()->attach($tagIds);
+        $this->createArticle();
 
         flash()->overlay("Your article has been created", "Success!");
 
@@ -90,12 +87,25 @@ class ArticlesController extends Controller
     public function update($article, ArticleRequest $request){
         $article->update($request->all());
 
-        //$tagIds = $request->input("taglist");
-        //$article->tags()->attach($tagIds);
+        $tagIds = $request->input("taglist");
+        $this->syncTags($article, $tagIds);
+        //$article->tags()->sync($tagIds);
 
         return redirect("articles");
     }
 
+    private function syncTags(Article $article, array $tags){
+        $article->tags()->sync($tags);
+    }
+
+    private function createArticle(ArticleRequest $request){
+        $article = \Auth::user()->articles()->create($request->all());
+
+        $tagIds = $request->input("taglist"); //returns array of submitted ids of tags
+        $article->tags()->attach($tagIds);
+
+        return $article;
+    }
 
     public function future(){
         $articles = Article::orderBy("published_at", "asc")->unpublished()->get();
