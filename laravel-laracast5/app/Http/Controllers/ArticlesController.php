@@ -63,7 +63,7 @@ class ArticlesController extends Controller
     }
 
     public function store(ArticleRequest $request){
-        $this->createArticle();
+        $this->createArticle($request);
 
         flash()->overlay("Your article has been created", "Success!");
 
