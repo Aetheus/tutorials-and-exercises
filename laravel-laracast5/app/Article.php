@@ -22,6 +22,12 @@ class Article extends Model
         $this->attributes["published_at"] = Carbon::parse($date);
     }
 
+    //this accessor will activate automatically when the published_At field is accessed
+    //e.g:  $bar = $article->published_at
+    public function getPublishedAtAttribute($date){
+        return new Carbon($date);
+    }
+
     //this is a scope; use it to retrieve models matching the scope
     //note the convetion: scope[NameOfScope]
     //you would use this elsewhere like so: Article::all()->published()->get()

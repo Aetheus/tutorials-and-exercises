@@ -4,9 +4,14 @@
         <meta charset="utf-8">
         <title></title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/css/master.css" media="screen" title="no title" charset="utf-8">
     </head>
     <body>
-        <div class="container">
+
+        @include("partials.nav")
+
+        <div id="main-container" class="container">
             {{--@include("partials.flash")--}}
             @include("flash::message")
 
@@ -20,6 +25,9 @@
             $("div.alert").not(".alert-important").delay(3000).slideUp(300);
             $("#flash-overlay-modal").modal();
         </script>
+
+        <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+
 
         @yield("footer")
     </body>

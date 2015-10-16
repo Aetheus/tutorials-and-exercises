@@ -31,7 +31,8 @@ class ArticlesController extends Controller
         //$articles = Article::all();
         $articles =
             Article::latest("published_at")->published()->get(); //latest(field) orders results in desc order; "published" is a custom scope for Article model
-        return view("articles.index", compact("articles") );
+        
+        return view("articles.index", compact("articles"));
     }
 
     public function create(){
